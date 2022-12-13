@@ -47,6 +47,12 @@ class UInt16(sa.types.Integer):
 class UInt8(sa.types.Integer):
     pass
 
+# Notes:
+#   Here is a good example of how to register a compilation rule
+#   using sqlalchemy.ext.compiles(). Here, we register the type
+#   class into the compile system. When compile unit, we always
+#   use the same logic in sqlalchemy (or same logic to reject).
+#
 
 @compiles(UInt64, "postgresql")
 @compiles(UInt32, "postgresql")
