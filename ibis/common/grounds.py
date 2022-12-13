@@ -209,6 +209,11 @@ class Comparable(Base):
         if self is other:
             return True
 
+        # Note:
+        #  "type comparison should be cheap" is spot on.
+        #  In Python, type equivalence is sometimes misinterpreted
+        #  as `isinstance()`, and it became the "default" way to check type.
+        #  Also notice: the Comparable class will store equivalence condition.
         # type comparison should be cheap
         if type(self) is not type(other):
             return False
