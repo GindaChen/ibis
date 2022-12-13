@@ -199,6 +199,10 @@ class UserDefinedFunction:
         self.func_type = func_type
         self.input_type = list(map(dt.dtype, input_type))
         self.output_type = dt.dtype(output_type)
+        # Notes:
+        #  Result of UDF may not be directly insertable into the backend.
+        #  We need to find a coercion function to turn the output value
+        #  into appropriate data type.
         self.coercion_fn = self._get_coercion_function()
 
     def _get_coercion_function(self):
