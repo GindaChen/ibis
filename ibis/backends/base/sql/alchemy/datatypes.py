@@ -139,7 +139,7 @@ def _(itype, **kwargs):
 def _(itype, **kwargs):
     return sa.TIMESTAMP(bool(itype.timezone))
 
-
+# Notes: (Question) Why?
 @to_sqla_type.register(dt.Array)
 def _(itype, **kwargs):
     # Unwrap the array element type because sqlalchemy doesn't allow arrays of
@@ -369,7 +369,9 @@ def sa_struct(dialect, satype, nullable=True):
     pairs = [(name, dt.dtype(dialect, typ)) for name, typ in satype.pairs]
     return dt.Struct.from_tuples(pairs, nullable=nullable)
 
-
+# Note:
+#  This is using schema.infer to register table and table clause.
+#  This is different from the previous dtype registration dispatcher.
 @sch.infer.register((sa.Table, sa.sql.TableClause))
 def schema_from_table(table, schema=None):
     """Retrieve an ibis schema from a SQLAlchemy ``Table``.
