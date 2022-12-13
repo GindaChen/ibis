@@ -36,7 +36,23 @@ _SPARK_DTYPE_TO_IBIS_DTYPE = {
     pt.TimestampType: dt.Timestamp,
 }
 
-
+# Note:
+#  Very good example how to use a singledispatcher
+#  to construct dtype routing, while preserving
+#  the type config construction logic.
+#  See all below.
+#  How to do this:
+#  1. Create a single dispatch object (`dt.dtype`):
+#       >>> dtype = Dispatcher('dtype')
+#  2. Register a default type function `spark_dtype_to_ibis_dtype`
+#       that handles simple type translation.
+#       Notice it uses a dictionary to get types.
+#       >>> @dt.dtype.register(pt.DataType)
+#       ... def spark_dtype_to_ibis_dtype(spark_dtype_obj, nullable=True):
+#       ...     pass
+#  3. For specific types that need function to handle,
+#       construct function `spark_<name>_dtype_to_ibis_dtype`
+#       and register the function to the dtype.
 @dt.dtype.register(pt.DataType)
 def spark_dtype_to_ibis_dtype(spark_dtype_obj, nullable=True):
     """Convert Spark SQL type objects to ibis type objects."""
